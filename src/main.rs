@@ -1,6 +1,7 @@
 extern crate rand;
 
 use std::io;
+use std::cmp::Ordering;
 use rand::Rng;
 
 fn main() {
@@ -8,12 +9,27 @@ fn main() {
 
     let number = rand::thread_rng().gen_range(1,101);
 
-    println!("Random nunber: {}",number );
+    loop {
+        let mut guess = String::new();
 
-    let mut guess = String::new();
+        io::stdin().read_line(&mut guess)
+            .expect("Unable to process guess");
 
-    io::stdin().read_line(&mut guess)
-        .expect("Unable to process guess");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
 
-    println!("You guess: {}", guess);
+
+        match guess.cmp(&number) {
+            Ordering::Less => println!("{} is lower than the number", guess),
+            Ordering::Greater => println!("{} is greater than the number", guess),
+            Ordering::Equal => {
+                println!("{} is the correct number!", guess);
+                break;
+            },
+        }
+    }
+
+
 }
