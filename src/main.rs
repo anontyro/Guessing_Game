@@ -19,17 +19,28 @@ fn main() {
             Ok(num) => num,
             Err(_) => continue,
         };
-
-
-        match guess.cmp(&number) {
-            Ordering::Less => println!("{} is lower than the number", guess),
-            Ordering::Greater => println!("{} is greater than the number", guess),
-            Ordering::Equal => {
-                println!("{} is the correct number!", guess);
-                break;
-            },
-        }
+        match check_guess(number, guess) {
+            true => break,
+            false => continue
+        };
     }
 
+}
 
+fn check_guess(num : u32, g: u32) -> bool {
+
+        match g.cmp(&num) {
+            Ordering::Less => {
+                println!("{} is lower than the number", g);
+                return false;
+                },
+            Ordering::Greater => {
+                println!("{} is greater than the number", g);
+                return false;
+                },
+            Ordering::Equal => {
+                println!("{} is the correct number!", g);
+                return true;
+            },
+        }
 }
